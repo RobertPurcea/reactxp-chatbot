@@ -1,11 +1,27 @@
-// import RX = require('reactxp');
+import RX = require('reactxp');
 
-// const MessageList = ({ messages }) => {
-//   return (
-//     <RX.View>
-//       { messages.map((mess, id) => <RX.Text key={ id }>{ mess }</RX.Text>) }
-//     </RX.View>
-//   );
-// }
+const _styles = {
+   userMessage: RX.Styles.createTextStyle({
 
-// export = MessageList;
+   }),
+   botMessage: RX.Styles.createTextStyle({
+      
+   })
+}
+
+const MessageList = ({ messages }) => {
+  return (
+    <RX.View>
+      {
+         messages.map((message, id) => {
+            const style = message.owner === 'bot'
+               ? _styles.botMessage
+               : _styles.userMessage;
+            return <RX.Text key={ id } style={ style }>{ message }</RX.Text>
+         })
+      }
+    </RX.View>
+  );
+}
+
+export = MessageList;
