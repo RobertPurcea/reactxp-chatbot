@@ -1,3 +1,17 @@
+## Chat-bot
+
+3 comps:
+  Input to enter message
+  Button to send message
+  List of existing messages
+
+App's state:
+  inputTextValue,
+  listOfMessages
+
+On button click => Update the list of messages
+
+
 # RXPHelloWorld
 
 This app works on React Native (iOS, Android) and web. Most of the app's code is contained in `App.tsx`.

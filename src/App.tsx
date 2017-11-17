@@ -1,72 +1,61 @@
-/*
-* This file demonstrates a basic ReactXP app.
-*/
-// This example uses ExperimentalNavigation on iOS and Android
-import Navigator, { Types, NavigatorDelegateSelector as DelegateSelector } from 'reactxp-navigation';
 import RX = require('reactxp');
 
-import MainPanel = require('./MainPanel');
-import SecondPanel = require('./SecondPanel');
+import SendButton = require('./SendButton');
+import Input = require('./Input');
+import MessageList = require('./MessageList');
 
-enum NavigationRouteId {
-    MainPanel,
-    SecondPanel
+interface S {
+  textInputValue?: string,
+  messageList?: string[]
 }
 
-const styles = {
-    // Standard navigator style should be an object. So we have to disable caching here.
-    navCardStyle: RX.Styles.createViewStyle({
-        backgroundColor: '#f5fcff'
-    }, false)
-};
+class App extends RX.Component<{}, S> {
 
-class App extends RX.Component<{}, null> {
-    private _navigator: Navigator;
+  // FIXME: TypeScript will throw an error if I don't enter a strng in the messageList array
+  state = {
+    textInputValue: "",
+    messageList: [""]
+  }
 
-    componentDidMount() {
-        this._navigator.immediatelyResetRouteStack([{
-            routeId: NavigationRouteId.MainPanel,
-            sceneConfigType: Types.NavigatorSceneConfigType.Fade
-        }]);
+  render() {
+    return (
+      <RX.View>
+        <SendButton sendMessage={this._sendMessage} />
+        <Input
+          onTextInputChange={ this._handleInputChange }
+          textInputValue={this.state.textInputValue}
+        />
+        <MessageList messages={this.state.messageList} />
+      </RX.View>
+    )
+  }
+  
+  _sendMessage = () => {
+    this.setState(prevState => {
+      const userMess = prevState.textInputValue;
+
+      return {
+        textInputValue: "",
+        messageList: [...prevState.messageList, userMess, this.getBotMessage(userMess)]
+      };
+    })
+  }
+
+  getBotMessage(userMessage: string) {
+    let dictionary = {
+      Hello: "I am bot haahhahaha"
     }
 
-    render() {
-        return (
-            <Navigator
-                ref={ this._onNavigatorRef }
-                renderScene={ this._renderScene }
-                cardStyle={ styles.navCardStyle }
-                delegateSelector={ DelegateSelector }
-            />
-        );
-    }
+    return dictionary[userMessage] || "Hello"
+  }
 
-    private _onNavigatorRef = (navigator: Navigator) => {
-        this._navigator = navigator;
-    }
 
-    private _renderScene = (navigatorRoute: Types.NavigatorRoute) => {
-        switch (navigatorRoute.routeId) {
-            case NavigationRouteId.MainPanel:
-                return <MainPanel onPressNavigate={ this._onPressNavigate } />;
-
-            case NavigationRouteId.SecondPanel:
-                return <SecondPanel onNavigateBack={ this._onPressBack } />;
-        }
-
-        return null;
-    }
-
-    private _onPressNavigate = () => {
-        this._navigator.push({
-            routeId: NavigationRouteId.SecondPanel,
-            sceneConfigType: Types.NavigatorSceneConfigType.FloatFromRight
-        });
-    }
-
-    private _onPressBack = () => {
-        this._navigator.pop();
-    }
+  _handleInputChange = (newValue: string) => {
+    this.setState(prevState => ({
+      textInputValue: newValue
+    }));
+  }
 }
 
 export = App;
+

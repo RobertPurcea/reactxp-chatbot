@@ -1,4 +1,5 @@
 import * as webpack from 'webpack';
+const path = require('path');
 
 const config: webpack.Configuration = {
     entry: "./src/index.tsx",
@@ -21,6 +22,12 @@ const config: webpack.Configuration = {
             { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
         ]
     },
+
+    devServer: {
+      contentBase: path.join(__dirname, "/"),
+      compress: true,
+      port: 9000
+    }
 };
 
 export default config;

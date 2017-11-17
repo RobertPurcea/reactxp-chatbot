@@ -1,7 +1,6 @@
 import RX = require('reactxp');
-import My = require('./My');
+
+import App = require('./App');
 
 RX.App.initialize(true, true);
-RX.UserInterface.setMainView(<My sendMessage={function() {console.log("hello")}}/>);
-
-// DO THE APP WHILE YOU LEARN, YOU KNOW ALREADY ENOUGH TO FINISH IT
+RX.UserInterface.setMainView(<App />);

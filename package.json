@@ -8,7 +8,8 @@
     "rn-watch": "tsc --watch",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "android": "node node_modules/react-native/local-cli/cli.js run-android",
-    "ios": "node node_modules/react-native/local-cli/cli.js run-ios"
+    "ios": "node node_modules/react-native/local-cli/cli.js run-ios",
+    "server": "webpack-dev-server --open"
   },
   "devDependencies": {
     "@types/node": "^7.0.12",
@@ -17,7 +18,8 @@
     "source-map-loader": "^0.1.6",
     "ts-node": "^3.2.1",
     "typescript": "2.4.1",
-    "webpack": "2.2.1"
+    "webpack": "2.2.1",
+    "webpack-dev-server": "^2.9.4"
   },
   "dependencies": {
     "react": "16.0.0-rc.3",
