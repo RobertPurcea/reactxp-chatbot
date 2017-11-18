@@ -30,10 +30,7 @@ class My extends RX.Component<MyProps, MyState> {
     this.props.sendMessage();
   }
 
-  clever () {
-    "dsaaaaaaaaaaaaaaaaaaaa"
-    "zxxxxxxxxxxxxxxxx"
-  }
+  
 
   render() {
     return (

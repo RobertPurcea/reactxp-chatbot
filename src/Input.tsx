@@ -18,7 +18,8 @@ interface InputState {
 
 interface InputProps {
   onTextInputChange: (newValue: string) => void,
-  textInputValue: string
+  textInputValue: string,
+  sendMessage: () => void
 }
 
 class Input extends RX.Component<InputProps, {}> {
@@ -31,6 +32,7 @@ class Input extends RX.Component<InputProps, {}> {
         onChangeText={ this.props.onTextInputChange }
         autoFocus={ true }
         placeholder={ 'Enter a message' }
+        onSubmitEditing={ this.props.sendMessage }
       />
     );
   }
