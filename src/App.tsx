@@ -14,15 +14,14 @@ const _styles = {
 
 interface AppState {
   textInputValue?: string,
-  messageList?: object[]
+  messageList?: String[]
 }
 
 class App extends RX.Component<{}, AppState> {
 
-  // FIXME: TypeScript will throw an error if I don't enter a string in the messageList array
   state = {
     textInputValue: "",
-    messageList: [""]
+    messageList: []
   }
 
   render() {
