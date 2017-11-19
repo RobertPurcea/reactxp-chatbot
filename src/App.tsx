@@ -8,7 +8,7 @@ const apiKey = "CC5hdB7sExxXv8vzNqoVctRItZg";
 const botUrl = `https://www.cleverbot.com/getreply?key=${apiKey}`;
 
 const _styles = {
-  inputContainer: RX.Styles.createViewStyle({
+  inputView: RX.Styles.createViewStyle({
       backgroundColor: 'grey',
       flexDirection: 'row',
       alignItems: 'center'
@@ -16,73 +16,79 @@ const _styles = {
 };
 
 interface AppState {
-  textInputValue?: string,
+  inputText?: string,
   messageList?: String[]
 }
 
 class App extends RX.Component<{}, AppState> {
-
   state = {
-    textInputValue: "",
+    inputText: "",
     messageList: []
   }
 
   render() {
     return (
       <RX.View>
-        <MessageList messages={this.state.messageList} />
-        <RX.View style={ _styles.inputContainer }>
+        <MessageList messages={ this.state.messageList } />
+        <RX.View style={ _styles.inputView }>
           <Input
-            onTextInputChange={ this._handleInputChange }
-            textInputValue={ this.state.textInputValue }
-            sendMessage={this._sendMessage}
+            onInputChange={ this._handleInputChange }
+            inputText={ this.state.inputText }
+            handleSubmit={ this._handleSubmit }
           />
-          <SendButton sendMessage={this._sendMessage} />
+          <SendButton handleSubmit={ this._handleSubmit } />
         </RX.View>
       </RX.View>
     )
   }
-  
-  _sendMessage = () => {
-    const userMess = this.state.textInputValue;
-    
 
-    if (!userMess.trim()) {
+  // sends the current message of the user to the message list
+  // gets and puts the message of the bot to the message list
+  _handleSubmit = () : void => {
+    const userMessage = this.state.inputText;
+
+    if (!userMessage.trim()) {
       return;
     }
+    
+    this._sendUserMessage(userMessage);
+    this._getBotMessage(userMessage);
+  }
 
+  // FIXME: the naming of the functions is odd. They actually modify the state, not just get/send something
+  _sendUserMessage = (userMessage: string): void => {    
     this.setState(prevState => ({
-        textInputValue: "",
+        inputText: "",
         messageList: [
           ...prevState.messageList,
-          userMess
+          userMessage
         ]
       })
     );
-    
-    this.getBotMessage(userMess, (botResponse) => {
-      this.setState(prevState => ({
-          messageList: [
-            ...prevState.messageList,
-            botResponse
-          ]
-        })
-      );
-    });
   }
-
-  getBotMessage(userMessage: string, cb): void {
+  _getBotMessage(userMessage: string): void {
     fetch(`${botUrl}&input=${userMessage}`)
       .then(res => res.json())
-      .then(jsonRes => cb(jsonRes.clever_output));
+      .then(json => {
+        this.setState(prevState => ({
+          messageList: [
+            ...prevState.messageList,
+            json.clever_output
+          ]
+        }));
+      });
   }
-
-
+  
+  // update the state every time input changes
   _handleInputChange = (newValue: string) => {
     this.setState(prevState => ({
-      textInputValue: newValue
+      inputText: newValue
     }));
   }
 }
 
 export = App;
+
+/**
+ * button pressed => sendAndReceiveMessages() => send_user_message(); get_bot_message();
+ */

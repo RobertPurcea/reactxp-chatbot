@@ -14,7 +14,7 @@ interface MyState {
 }
 
 interface MyProps {
-  sendMessage: () => void
+  handleSubmit: () => void
 }
 
 class My extends RX.Component<MyProps, MyState> {
@@ -27,7 +27,7 @@ class My extends RX.Component<MyProps, MyState> {
     e.stopPropagation();
 
     // announce the input wrapper the button was clicked
-    this.props.sendMessage();
+    this.props.handleSubmit();
   }
 
   
