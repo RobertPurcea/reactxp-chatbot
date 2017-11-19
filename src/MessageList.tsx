@@ -13,19 +13,28 @@ const _styles = {
   })
 }
 
-const MessageList = ({ messages }) => {
-  return (
-    <RX.View style={ _styles.containerStyle }>
-      {
-         messages.map((message, id) => {
-            const style = id % 2 
-               ? _styles.botMessage
-               : _styles.userMessage;
-            return <RX.Text key={ id } style={ style }>{ message }</RX.Text>
-         })
-      }
-    </RX.View>
-  );
-}
+const MessageList = ({ messages }) => (
+  <RX.View style={ _styles.containerStyle }>
+    {
+      messages.map((message, id) => {
+        const style = id % 2 ? _styles.botMessage : _styles.userMessage;
+
+        /**
+         * the order of items does not change so we can
+         * safely use ids from map as keys
+         */
+        return (
+          <RX.Text
+            key={ id }
+            style={ style }
+          >
+            { message }
+          </RX.Text>
+        );
+      })
+    }
+  </RX.View>
+);
+
 
 export = MessageList;

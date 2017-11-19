@@ -9,10 +9,6 @@ const _styles = {
       backgroundColor: 'green',
       flexDirection: 'row',
       alignItems: 'center'
-  }),
-  appContainer: RX.Styles.createViewStyle({
-    justifyContent: 'center',
-    margin: 0
   })
 };
 
@@ -33,8 +29,8 @@ class App extends RX.Component<AppProps, AppState> {
 
   render() {
     return (
-      <RX.View >
-        <MessageList messages={ this.state.messageList }/>
+      <RX.View>
+        <MessageList messages={ this.state.messageList } />
         <RX.View style={ _styles.inputView }>
           <Input
             onInputChange={ this._handleInputChange }
@@ -47,21 +43,20 @@ class App extends RX.Component<AppProps, AppState> {
     )
   }
 
-  // on input submit, send user message and get the bot message
+  /**
+   * if userMessage is valid, send it to message history
+   * then, get the bot message and send it to message history as well
+   */
   private _handleSubmit = () : void => {
     const userMessage = this.state.inputText;
 
-    if (!userMessage.trim()) {
-      return;
-    }
+    if (!userMessage.trim()) return;
 
     this._sendUserMessage(userMessage);
     this._sendBotMessage(userMessage);
   }
-  /**
-   * Send the user/bot message to the message history
-   * The bot message is async and is mapped 1 on 1 to user messages
-   */
+
+  // send user message to message history and reset input
   private _sendUserMessage = (userMessage: string): void => {    
     this.setState(prevState => ({
         inputText: "",
@@ -72,6 +67,8 @@ class App extends RX.Component<AppProps, AppState> {
       })
     );
   }
+
+  // compute the bot message and send it asynchronously to message history
   private _sendBotMessage(userMessage: string): void {
     fetch(`${this.props.botUrl}&input=${userMessage}`)
       .then(res => res.json())
@@ -85,7 +82,10 @@ class App extends RX.Component<AppProps, AppState> {
       });
   }
   
-  // input is controlled by App
+  /**
+   * modify state according to input change event
+   * input is a controlled component, it's value comes App state
+   */ 
   private _handleInputChange = (newValue: string) => {
     this.setState(prevState => ({
       inputText: newValue

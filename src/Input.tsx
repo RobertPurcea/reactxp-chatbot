@@ -13,30 +13,15 @@ const _styles = {
   })
 };
 
-interface InputState {
-  value?: string
-}
-
-interface InputProps {
-  onInputChange: (newValue: string) => void,
-  inputText: string,
-  handleSubmit: () => void
-}
-
-class Input extends RX.Component<InputProps, {}> {
-  render() {
-    return (
-      <RX.TextInput
-        type="submit"
-        style={ _styles.textInput }
-        value={ this.props.inputText }
-        onChangeText={ this.props.onInputChange }
-        autoFocus={ true }
-        placeholder={ 'Enter a message' }
-        onSubmitEditing={ this.props.handleSubmit }
-      />
-    );
-  }
-}
+const Input = ({ onInputChange, inputText, handleSubmit }) => (
+    <RX.TextInput
+      style={ _styles.textInput }
+      value={ inputText }
+      onChangeText={ onInputChange }
+      autoFocus={ true }
+      placeholder={ 'Enter a message' }
+      onSubmitEditing={ handleSubmit }
+    />
+);
 
 export = Input;
