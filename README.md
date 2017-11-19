@@ -1,4 +1,4 @@
-## Done chat-bot
+## Hello, some thoughts on the project
 
   1. API key usage
 
@@ -8,26 +8,6 @@
 
     Possible solution: Do the request in the backend, and create an endpoint for it.
 
-  2. 
+  2. As you said, I could have created the AI myself but I felt like using cleverbot was a better way
 
-  
-
-## Chat-bot
-
-3 comps:
-  Input to enter message
-  Button to send message
-  List of existing messages
-
-App's state:
-  inputTextValue,
-  listOfMessages
-
-On button click => Update the list of messages
-
-TODO: functionality for reading multiple messages?
-# RXPHelloWorld
-
-This app works on React Native (iOS, Android) and web. Most of the app's code is contained in `App.tsx`.
-
-The commands in the instructions below assume you are in the root of this repo.
+  3. I've used the exact components you asked for. I haven't thought about making other components since your request was specific
