@@ -1,17 +1,18 @@
 import RX = require('reactxp');
 
-import SendButton = require('./SendButton');
+import SubmitButton = require('./SubmitButton');
 import Input = require('./Input');
 import MessageList = require('./MessageList');
 
-const apiKey = "CC5hdB7sExxXv8vzNqoVctRItZg";
-const botUrl = `https://www.cleverbot.com/getreply?key=${apiKey}`;
-
 const _styles = {
   inputView: RX.Styles.createViewStyle({
-      backgroundColor: 'grey',
+      backgroundColor: 'green',
       flexDirection: 'row',
       alignItems: 'center'
+  }),
+  appContainer: RX.Styles.createViewStyle({
+    justifyContent: 'center',
+    margin: 0
   })
 };
 
@@ -20,7 +21,11 @@ interface AppState {
   messageList?: String[]
 }
 
-class App extends RX.Component<{}, AppState> {
+interface AppProps {
+  botUrl: string
+}
+
+class App extends RX.Component<AppProps, AppState> {
   state = {
     inputText: "",
     messageList: []
@@ -28,35 +33,36 @@ class App extends RX.Component<{}, AppState> {
 
   render() {
     return (
-      <RX.View>
-        <MessageList messages={ this.state.messageList } />
+      <RX.View >
+        <MessageList messages={ this.state.messageList }/>
         <RX.View style={ _styles.inputView }>
           <Input
             onInputChange={ this._handleInputChange }
             inputText={ this.state.inputText }
             handleSubmit={ this._handleSubmit }
           />
-          <SendButton handleSubmit={ this._handleSubmit } />
+          <SubmitButton handleSubmit={ this._handleSubmit } />
         </RX.View>
       </RX.View>
     )
   }
 
-  // sends the current message of the user to the message list
-  // gets and puts the message of the bot to the message list
-  _handleSubmit = () : void => {
+  // on input submit, send user message and get the bot message
+  private _handleSubmit = () : void => {
     const userMessage = this.state.inputText;
 
     if (!userMessage.trim()) {
       return;
     }
-    
-    this._sendUserMessage(userMessage);
-    this._getBotMessage(userMessage);
-  }
 
-  // FIXME: the naming of the functions is odd. They actually modify the state, not just get/send something
-  _sendUserMessage = (userMessage: string): void => {    
+    this._sendUserMessage(userMessage);
+    this._sendBotMessage(userMessage);
+  }
+  /**
+   * Send the user/bot message to the message history
+   * The bot message is async and is mapped 1 on 1 to user messages
+   */
+  private _sendUserMessage = (userMessage: string): void => {    
     this.setState(prevState => ({
         inputText: "",
         messageList: [
@@ -66,8 +72,8 @@ class App extends RX.Component<{}, AppState> {
       })
     );
   }
-  _getBotMessage(userMessage: string): void {
-    fetch(`${botUrl}&input=${userMessage}`)
+  private _sendBotMessage(userMessage: string): void {
+    fetch(`${this.props.botUrl}&input=${userMessage}`)
       .then(res => res.json())
       .then(json => {
         this.setState(prevState => ({
@@ -79,8 +85,8 @@ class App extends RX.Component<{}, AppState> {
       });
   }
   
-  // update the state every time input changes
-  _handleInputChange = (newValue: string) => {
+  // input is controlled by App
+  private _handleInputChange = (newValue: string) => {
     this.setState(prevState => ({
       inputText: newValue
     }));
@@ -88,7 +94,3 @@ class App extends RX.Component<{}, AppState> {
 }
 
 export = App;
-
-/**
- * button pressed => sendAndReceiveMessages() => send_user_message(); get_bot_message();
- */

@@ -1,20 +1,24 @@
 import RX = require('reactxp');
 
 const _styles = {
-   userMessage: RX.Styles.createTextStyle({
-
-   }),
-   botMessage: RX.Styles.createTextStyle({
-      
-   })
+  containerStyle: RX.Styles.createViewStyle({
+    backgroundColor: 'darkgreen'
+  }),
+  userMessage: RX.Styles.createTextStyle({
+    color: 'lightblue',
+    alignSelf: 'flex-end'
+  }),
+  botMessage: RX.Styles.createTextStyle({
+    color: 'white'      
+  })
 }
 
 const MessageList = ({ messages }) => {
   return (
-    <RX.View>
+    <RX.View style={ _styles.containerStyle }>
       {
          messages.map((message, id) => {
-            const style = message.owner === 'bot'
+            const style = id % 2 
                ? _styles.botMessage
                : _styles.userMessage;
             return <RX.Text key={ id } style={ style }>{ message }</RX.Text>

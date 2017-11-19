@@ -8,7 +8,8 @@ const _styles = {
       borderWidth: 1,
       borderStyle: 'solid',
       height: 30,
-      fontSize: 16
+      fontSize: 16,
+      borderRadius: 5
   })
 };
 
