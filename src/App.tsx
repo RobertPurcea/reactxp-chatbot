@@ -40,11 +40,11 @@ class App extends RX.Component<AppProps, AppState> {
           <SubmitButton handleSubmit={ this._handleSubmit } />
         </RX.View>
       </RX.View>
-    )
+    );
   }
 
   /**
-   * if userMessage is valid, send it to message history
+   * if userMessage is not empty, send it to message history
    * then, get the bot message and send it to message history as well
    */
   private _handleSubmit = () : void => {
@@ -57,7 +57,7 @@ class App extends RX.Component<AppProps, AppState> {
   }
 
   // send user message to message history and reset input
-  private _sendUserMessage = (userMessage: string): void => {    
+  private _sendUserMessage = (userMessage: string): void => {
     this.setState(prevState => ({
         inputText: "",
         messageList: [
@@ -81,11 +81,11 @@ class App extends RX.Component<AppProps, AppState> {
         }));
       });
   }
-  
+
   /**
    * modify state according to input change event
-   * input is a controlled component, it's value comes App state
-   */ 
+   * input is a controlled component, it's value comes from App state
+   */
   private _handleInputChange = (newValue: string) => {
     this.setState(prevState => ({
       inputText: newValue

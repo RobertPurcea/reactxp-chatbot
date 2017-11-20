@@ -9,7 +9,7 @@ const _styles = {
     alignSelf: 'flex-end'
   }),
   botMessage: RX.Styles.createTextStyle({
-    color: 'white'      
+    color: 'white'
   })
 }
 
